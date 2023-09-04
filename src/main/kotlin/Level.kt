@@ -4,7 +4,6 @@ typealias IntPair = Pair<Int, Int>
 var gameTime: Double = Double.NaN
 
 class Level(
-    // val floor: List<IntRange> = emptyList(),
     val floor: List<IntPair> = emptyList(),
     val bushes: List<IntPair> = emptyList(),
     val hills: List<IntPair> = emptyList(),
@@ -17,7 +16,7 @@ class Level(
 
     val cloudSprites: List<Sprite> = emptyList(),
     val bushSprites: List<Sprite> = emptyList(),
-    val hillSprites: List<Sprite> = emptyList(),
+//    val hillSprites: List<Sprite> = emptyList(),
     val pipeSprites: List<Sprite> = emptyList(),
     val floorSprite: Sprite,
     val brickSprite: Sprite,
@@ -38,19 +37,19 @@ class Level(
 
 
     // val max = if (a > b) a else b // в одну строку
-    var dir = true
+//    var dir = true
     fun update(timestamp: Double) {
         dt = (if (gameTime.isNaN()) 0.0
         else timestamp - gameTime) / 1000
         gameTime = timestamp
 
-        if (level.windowX >= 190) {
+  /*      if (level.windowX >= 190) {
             dir = false}
         else if (level.windowX <= 0){
             dir = true
             dt = 0.0
         }
-
+*/
         // if (dir && KeyboardInput.isRunPressed()){
        // if (KeyboardInput.isRunPressed()){
 //             if (dir){
@@ -98,6 +97,28 @@ fun addFloor(start: Int, end: Int) {
 
 
 
+    fun addHillSection(i:Int, height:Int, size:Int) {
+        for(k in 0 until height) { //
+            for (j in 0 until height) {
+                level.entities += Entity(i+j, 12-j, hillSprites[0])
+                for (n in 1..size-2*j) {
+                    level.entities += Entity(i + j + n, 12-j, hillSprites[4])
+                }
+                level.entities += Entity(size+i-j+1, 12-j, hillSprites[2])
+            }
+        } //
+    }
+
+
+    fun addHill(i: Int, height: Int) {
+        for(j in 0 until height) {
+            val size = height*2-1 // calculate section size
+            addHillSection(i, height, size)
+        }
+        level.entities += Entity(i+height, 12-height, hillSprites[1])
+    }
+
+
     //  https://stepik.org/lesson/825778/step/4?unit=829291
 
 
@@ -124,26 +145,20 @@ fun addFloor(start: Int, end: Int) {
 
     fun addBush(i: Int, length: Int) {
 
-        level.entities += Entity(i, 12, bushSprites[0])
-        //drawSprite(bushSprites[0], i , j = 12) // left side
+        level.entities += Entity(i, 12, bushSprites[0])  // left side
         for (n in 1 .. length) {
-            //drawSprite(bushSprites[1], i+n , j = 12) // middle
-            level.entities += Entity(i+n, 12, bushSprites[1])
+            level.entities += Entity(i+n, 12, bushSprites[1]) // middle
         }
-        //drawSprite(bushSprites[2], i+length+1 , j = 12) // right side
-        level.entities += Entity(i+length+1, 12, bushSprites[2])
+        level.entities += Entity(i+length+1, 12, bushSprites[2])  // right side
     }
 
 
     fun addCloud(i: Int, j: Int, length: Int) {
-        level.entities += Entity(i, j, cloudSpriteB[0])
-        // drawSprite(cloudSpriteB[0], i , j) // left side
+        level.entities += Entity(i, j, cloudSpriteB[0]) // left side
         for (n in 1 .. length) {
-            //drawSprite(cloudSpriteB[1], i+n , j) // middle
-            level.entities += Entity(i+n, j, cloudSpriteB[1])
+            level.entities += Entity(i+n, j, cloudSpriteB[1]) // middle
         }
-        //drawSprite(cloudSpriteB[2], i+length+1 , j) // right side
-        level.entities += Entity(i+length+1, j, cloudSpriteB[2])
+        level.entities += Entity(i+length+1, j, cloudSpriteB[2])  // right side
     }
 
 

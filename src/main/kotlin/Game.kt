@@ -49,7 +49,7 @@ const val CELL_SIZE = 16.0
         bushSprites = Sprite.bush(11,9),
         cloudSprites = Sprite.cloud(0,20),
 
-        hillSprites = Sprite.hill(8,10),
+    //    hillSprites = Sprite.hill(8,10),
         brickSprite = Sprite.tile(1,0),
         wallSprite = Sprite.tile(0,1),
         )
@@ -129,30 +129,8 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
                 }
 
 
-
-                fun addHillSection(i:Int, height:Int, size:Int) {
-                    for(k in 0 until height) { //
-                        for (j in 0 until height) {
-                            level.entities += Entity(i+j, 12-j, hillSprites[0])
-                            for (n in 1..size-2*j) {
-                                level.entities += Entity(i + j + n, 12-j, hillSprites[4])
-                            }
-                            level.entities += Entity(size+i-j+1, 12-j, hillSprites[2])
-                        }
-                    } //
-                }
-
-
-                fun addHill(i: Int, height: Int) {
-                    for(j in 0 until height) {
-                        val size = height*2-1 // calculate section size
-                        addHillSection(i, height, size)
-                    }
-                    level.entities += Entity(i+height, 12-height, hillSprites[1])
-                }
-
                 level.hills.forEach { (i, size) ->
-                    addHill(i, size)
+                    level.addHill(i, size)
 //                    addHill(i, size)
                 }
 
