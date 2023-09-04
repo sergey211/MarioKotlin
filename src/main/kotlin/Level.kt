@@ -53,11 +53,14 @@ class Level(
 
         // if (dir && KeyboardInput.isRunPressed()){
        // if (KeyboardInput.isRunPressed()){
-             if (dir){
+//             if (dir){
+        KeyboardInput.initKeyboardListeners()
+             if (KeyboardInput.isRightPressed()){
             level.windowX += dt * 10}
-          else { level.windowX -= dt * 10}
+          else  if (KeyboardInput.isLeftPressed())
+          { level.windowX -= dt * 10}
       //  else if (KeyboardInput.isRunBackPressed())
-        { level.windowX -= dt * 10}
+  //      { level.windowX -= dt * 10}
 //        else if (KeyboardInput.isJumpPressed())
 //        { musicTheme.play()  }
 

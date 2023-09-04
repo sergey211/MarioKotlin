@@ -80,8 +80,8 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
             document.addEventListener("keydown", { event ->
                 val keyboardEvent = event as KeyboardEvent
                 when (keyboardEvent.code) {
-                    "ArrowRight" ->  level.windowX += 1.3 //drawCloud(11, 3)//
-                    "ArrowLeft" ->  level.windowX -= 1.3 //drawCloud(11, 3)//
+                //    "ArrowRight" ->  level.windowX += 1.3 //drawCloud(11, 3)//
+                //    "ArrowLeft" ->  level.windowX -= 1.3 //drawCloud(11, 3)//
                    //  "ArrowRight" -> level.windowX += dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
                    //  "ArrowLeft" -> level.windowX -= dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
                     "ArrowUp" -> musicTheme.play()    // start
