@@ -13,9 +13,10 @@ const val BACKGROUND_COLOR = "#7974FF"
 
 val musicTheme = Audio(src = "aboveground_bgm.ogg")
 var dt = 0.0
-val sourceImage = Image()
+var sourceImage = Image()
 lateinit var context: CanvasRenderingContext2D
 const val CELL_SIZE = 16.0
+//val hero = Hero()
 
 
 
@@ -55,9 +56,33 @@ const val CELL_SIZE = 16.0
         )
 
 
+object Images {
+    operator fun get(src: String) = images[src]!!
+    private val images = mutableMapOf<String, Image?>()
+    private fun isReady() = images.values.all { it != null }
+    fun load(vararg imagesSrc: String, onload: () -> Unit) {
+        imagesSrc.forEach { src ->
+            val image = Image()
+            images[src] = null
+            image.src = src
+            image.onload = {
+                images[src] = image
+                if (isReady()) {
+                    onload()
+                }
+            }
+        }
+    }
+}
+
+
 fun drawSprite(sprite: Sprite, x: Double, y: Double) {
     context.drawImage(
-        sourceImage,
+
+        Images[TILES_IMAGE],                 // тут важна картинка
+ //       Images[HERO_FORWARD_IMAGE],
+ //       Images[sprite.src],
+        // sourceImage,
         sx = sprite.si * CELL_SIZE + 2/3.0, // +1
         sy = sprite.sj * CELL_SIZE + 2/3.0, // +1
         sw = sprite.w * CELL_SIZE - 4/3.0, // -2
@@ -70,23 +95,21 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
 }
 
 
+
     fun main() {
 
         window.onload = {
-
-
-
 
             document.addEventListener("keydown", { event ->
                 val keyboardEvent = event as KeyboardEvent
                 when (keyboardEvent.code) {
                 //    "ArrowRight" ->  level.windowX += 1.3 //drawCloud(11, 3)//
                 //    "ArrowLeft" ->  level.windowX -= 1.3 //drawCloud(11, 3)//
-                   //  "ArrowRight" -> level.windowX += dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
+                //      "ArrowRight" ->  //level.windowX += dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
                    //  "ArrowLeft" -> level.windowX -= dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
                     "ArrowUp" -> musicTheme.play()    // start
                     "ArrowDown" ->  musicTheme.pause()  // stop
-                  //  "Space" ->   window.requestAnimationFrame(::update)
+                //    "Space" ->   hero.moveRight() // window.requestAnimationFrame(::update)
                 }
                 render()
             })
@@ -102,8 +125,22 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
             context.scale(3.0, 3.0)
             context.fillStyle = "#7974FF"
             context.fillRect(0.0, 0.0, 762.0, 720.0)
-            sourceImage.src = TILES_IMAGE
-            sourceImage.onload = {
+
+            Images.load(
+                TILES_IMAGE,
+                HERO_FORWARD_IMAGE,
+                HERO_BACKWARD_IMAGE
+            )
+            {
+                window.requestAnimationFrame(::update)
+        /*    }
+
+//            sourceImage.src = Sprite.src
+//            sourceImage.src = TILES_IMAGE
+            sourceImage.src = HERO_FORWARD_IMAGE
+
+            sourceImage.onload = {  */
+          //  Images.load().onload = {
 
                 level.floor.forEach { (i, size) ->
                     level.addFloor(i, size)
@@ -128,8 +165,7 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
                     level.addPipe(i, 13-j)
                 }
 
-
-                level.hills.forEach { (i, size) ->
+              level.hills.forEach { (i, size) ->
                     level.addHill(i, size)
 //                    addHill(i, size)
                 }
@@ -157,21 +193,36 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
 //                    addBackwardSteps(i, j, size)
                 }
 
+                level.addHero()
 
                 window.requestAnimationFrame(::update)
                 render()
 
 
+
+
             }
+
+//            sourceImage.src = HERO_FORWARD_IMAGE
+//            sourceImage.onload = {
+//                level.addHero()
+//                //window.requestAnimationFrame(::update)
+//                //render()
+//            }
+
+
             Unit
         }
-    }
+  }
 
 
     fun render() {
         context.clearRect(0.0, 0.0, CANVAS_WIDTH, CANVAS_HEIGHT)
         context.fillStyle = BACKGROUND_COLOR
         context.fillRect(0.0, 0.0, CANVAS_WIDTH, CANVAS_HEIGHT)
+
+
+
         level.render()
     }
 
