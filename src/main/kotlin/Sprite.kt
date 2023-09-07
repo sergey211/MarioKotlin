@@ -1,4 +1,6 @@
 const val TILES_IMAGE = "sprites/tiles.png"
+const val HERO_FORWARD_IMAGE = "sprites/player.png"
+const val HERO_BACKWARD_IMAGE = "sprites/playerl.png"
 
 //data class Sprite(var src: String, val si: Int, val sj: Int, val w: Int = 1, val h: Int = 1)
 //val cloudSprite = Sprite(TILES_IMAGE, si = 0, sj = 20, w = 3, h = 2)
@@ -17,7 +19,7 @@ const val TILES_IMAGE = "sprites/tiles.png"
 
 
 
-data class Sprite(val src: String, val si: Int, val sj: Int, val w: Int = 1, val h: Int = 1) {
+data class Sprite(var src: String, val si: Int, val sj: Int, val w: Int = 1, val h: Int = 1) {
     companion object {
 
         fun tile(si: Int, sj: Int, w: Int = 1, h: Int = 1) = Sprite(TILES_IMAGE, si, sj, w, h)
@@ -72,6 +74,8 @@ val pipelineSprite = listOf(
     Sprite(TILES_IMAGE, si = 0, sj = 9, w = 2),
     //  Sprite(TILES_IMAGE, si = 2, sj = 20, h = 2),
 )
+
+val heroSprite = Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2)
 
 
 

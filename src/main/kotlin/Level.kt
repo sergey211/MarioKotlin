@@ -85,6 +85,8 @@ fun addFloor(start: Int, end: Int) {
     }
 }
 
+    fun addHero()
+    { entities += Entity(4, 12, heroSprite)}
 
     //                addPipe(i, 13-j) // 2,3,4  = 11,  10,9
     fun addPipe(i: Int, j: Int) {
