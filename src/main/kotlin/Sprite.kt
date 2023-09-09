@@ -53,8 +53,9 @@ data class Sprite(var src: String, val si: Int, val sj: Int, val w: Int = 1, val
 
 // x начала спрайта, у начала, длина, высота
 val cloudSpriteFun = Sprite(TILES_IMAGE, si = 5, sj = 20, w = 3, h = 2)
-//val floorSprite = Sprite(TILES_IMAGE, si = 0, sj = 0, w = 1, h = 1)
-//val brickSprite = Sprite(TILES_IMAGE, si = 1, sj = 0, w = 1, h = 1)
+val floorSprite = Sprite(TILES_IMAGE, si = 0, sj = 0, w = 1, h = 1)
+val wallSprite = Sprite(TILES_IMAGE, si = 0, sj = 1, w = 1, h = 1)
+val brickSprite = Sprite(TILES_IMAGE, si = 1, sj = 0, w = 1, h = 1)
 val pandorasSprite = Sprite(TILES_IMAGE, si = 24, sj = 0, w = 1, h = 1)
 val bushSprites = listOf(
     Sprite(TILES_IMAGE, si = 11, sj = 9),

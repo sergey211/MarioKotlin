@@ -15,12 +15,13 @@ class Level(
     val backwardSteps: List<IntTriple> = emptyList(),
 
     val cloudSprites: List<Sprite> = emptyList(),
-    val bushSprites: List<Sprite> = emptyList(),
+    val bushSpritesB: List<Sprite> = emptyList(),
 //    val hillSprites: List<Sprite> = emptyList(),
-    val pipeSprites: List<Sprite> = emptyList(),
-    val floorSprite: Sprite,
-    val brickSprite: Sprite,
-    val wallSprite: Sprite,
+//    val pipeSprites: List<Sprite> = emptyList(),
+    val floorSpriteB: Sprite,
+    val brickSpriteB: Sprite,
+    val wallSpriteB: Sprite,
+    val heroSpriteB: Sprite
 )
 
 {
@@ -55,7 +56,19 @@ class Level(
 //             if (dir){
         KeyboardInput.initKeyboardListeners()
              if (KeyboardInput.isRightPressed()){
-            level.windowX += dt * 10}
+           // level.windowX += dt * 10}
+            //hero.moveRight()
+              hero.x += 0.02
+                 level.windowX += dt * 10
+              //hero.moveRight()
+//                 context.clearRect(hero.x, hero.y, 5.0,2.0)
+                 // context.clearRect(0.0, 0.0, 762.0,720.0)
+                // context.fillRect(0.0, 0.0, 762.0, 720.0)
+                 //level.heroSprite.x(hero.x)
+                 //addHero(hero.x)
+         //        entities += Entity(hero.x, 11.0, level.heroSprite)
+
+             }
           else  if (KeyboardInput.isLeftPressed())
           { level.windowX -= dt * 10}
       //  else if (KeyboardInput.isRunBackPressed())
@@ -80,13 +93,14 @@ class Level(
 fun addFloor(start: Int, end: Int) {
     for (j in 15 downTo 13) {
         for (i in start..end) {
-            entities += Entity(i, j, floorSprite)
+            level.entities += Entity(i, j, floorSprite)
         }
     }
 }
 
-    fun addHero()
-    { entities += Entity(4, 12, heroSprite)}
+    fun addHero(i: Double)
+  //  { entities += Entity(i, 12.0, heroSprite)}
+    { level.entities += Entity(i, 12.0, heroSprite)}
 
     //                addPipe(i, 13-j) // 2,3,4  = 11,  10,9
     fun addPipe(i: Int, j: Int) {
@@ -173,15 +187,15 @@ fun addFloor(start: Int, end: Int) {
     fun addForwardSteps(i: Int, height: Int, length: Int) {
         for (k in 0 .. height-1) {
             for (l in 0..k)
-            {level.entities += Entity(i+k , 12-k+l, level.wallSprite)}
-            level.entities += Entity(i+k , 12-k, level.wallSprite)
+            {level.entities += Entity(i+k , 12-k+l, wallSprite)}
+            level.entities += Entity(i+k , 12-k, wallSprite)
         }
         for (k in 0 until length)
         {
             for (j in 0 until height) {
-                level.entities += Entity(i+height+k , 12-j, level.wallSprite)
+                level.entities += Entity(i+height+k , 12-j, wallSprite)
             }
-            level.entities += Entity(i+height+k , 12-height+1, level.wallSprite)
+            level.entities += Entity(i+height+k , 12-height+1, wallSprite)
         }
 
 
@@ -196,17 +210,17 @@ fun addFloor(start: Int, end: Int) {
         for (k in 0 until length)
         {
             for (j in 0 until height) {
-                level.entities += Entity(i+k , 12-j, level.wallSprite)
+                level.entities += Entity(i+k , 12-j, wallSprite)
             }
-            level.entities += Entity(i+k , 12-height+1, level.wallSprite)
+            level.entities += Entity(i+k , 12-height+1, wallSprite)
         }
 
 
         for (k in height-1 downTo  0) {
             for (l in k downTo  0) {
-                level.entities += Entity(i+length+height-1-k, 8+height-l, level.wallSprite)
+                level.entities += Entity(i+length+height-1-k, 8+height-l, wallSprite)
             }
-            level.entities += Entity(i +length + k , 9 + k, level.wallSprite)
+            level.entities += Entity(i +length + k , 9 + k, wallSprite)
         }
 
     }
