@@ -1,11 +1,11 @@
+
 import kotlinx.browser.document
 import kotlinx.browser.window
+import org.w3c.dom.Audio
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.Image
 import org.w3c.dom.events.KeyboardEvent
-import org.w3c.dom.Audio
-import kotlin.js.Date
 
 const val CANVAS_WIDTH = 762.0
 const val CANVAS_HEIGHT = 720.0
@@ -13,26 +13,22 @@ const val BACKGROUND_COLOR = "#7974FF"
 
 val musicTheme = Audio(src = "aboveground_bgm.ogg")
 var dt = 0.0
-//var sourceImage = Image()
 lateinit var context: CanvasRenderingContext2D
 const val CELL_SIZE = 16.0
-val hero = Hero()
+var hero : Entity = Entity(x = 4.0, y = 4.0, Sprite(HERO_FORWARD_IMAGE, si = 3, sj = 1))
 
 
-
-
-    infix fun <A, B> A.x(b: B) = Pair(this, b)
+infix fun <A, B> A.x(b: B) = Pair(this, b)
 
     val level = Level(
 
-        // floor = listOf(0..68, 71..85, 89..152, 155..212),
         floor = listOf(0 x 68, 71 x 85, 89 x 152, 155 x 212),
         bushes = listOf(11 x 3, 23 x 1, 59 x 3, 89 x 2, 137 x 2, 71 x 1, 106 x 3, 118 x 1, 167 x 1),
         clouds = listOf(
             7 x 8 x 1, 19 x 9 x 1, 27 x 8 x 3, 36 x 9 x 2, 56 x 8 x 1, 67 x 9 x 1, 75 x 8 x 3,
             87 x 9 x 1, 103 x 9 x 1, 123 x 8 x 3, 132 x 9 x 2, 152 x 8 x 1, 163 x 9 x 1,
             171 x 8 x 3, 180 x 9 x 2, 200 x 8 x 1
-        ),  // 7=x , 8=y, 1=length
+        ),
         bricks = listOf(
             20 x 3 x 5, 77 x 3 x 3, 80 x 7 x 8, 91 x 7 x 4, 94 x 3 x 1,
             117 x 3 x 1, 100 x 3 x 2, 120 x 7 x 4, 128 x 7 x 4, 129 x 3 x 2, 168 x 3 x 4
@@ -46,14 +42,14 @@ val hero = Hero()
         forwardSteps = listOf(134 x 4 x 0, 148 x 4 x 1, 181 x 8 x 1),
         backwardSteps = listOf(140 x 4 x 1, 155 x 4 x 0),
 
-        floorSpriteB = Sprite.tile(0,0),
-        bushSpritesB = Sprite.bush(11,9),
-        cloudSprites = Sprite.cloud(0,20),
 
-    //    hillSprites = Sprite.hill(8,10),
-        brickSpriteB = Sprite.tile(1,0),
-        wallSpriteB = Sprite.tile(0,1),
-        heroSpriteB = Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2)
+//        floorSpriteB = Sprite.tile(0,0),
+//        bushSpritesB = Sprite.bush(11,9),
+//        cloudSprites = Sprite.cloud(0,20),
+//
+//        brickSpriteB = Sprite.tile(1,0),
+//        wallSpriteB = Sprite.tile(0,1),
+//        heroSpriteB = Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2)
         )
 
 
@@ -79,11 +75,7 @@ object Images {
 
 fun drawSprite(sprite: Sprite, x: Double, y: Double) {
     context.drawImage(
-
-  //     Images[TILES_IMAGE],                 // тут важна картинка
- //       Images[HERO_FORWARD_IMAGE],
         Images[sprite.src],
-        // sourceImage,
         sx = sprite.si * CELL_SIZE + 2/3.0, // +1
         sy = sprite.sj * CELL_SIZE + 2/3.0, // +1
         sw = sprite.w * CELL_SIZE - 4/3.0, // -2
@@ -98,21 +90,33 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
 
 
     fun main() {
+        class Hero : Entity(x = 4.0, y = 12.0, Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2)) {
+    fun moveRight(){
+        sprite.src = HERO_FORWARD_IMAGE
+        x += 0.05
+    }
+
+    fun moveLeft(){
+        sprite.src = HERO_BACKWARD_IMAGE
+        x -= 0.05
+    }
+        }
+        var hero = Hero()
 
         window.onload = {
 
             document.addEventListener("keydown", { event ->
                 val keyboardEvent = event as KeyboardEvent
                 when (keyboardEvent.code) {
-                    //     "ArrowRight" ->  hero.moveRight() // level.windowX += 1.3 //drawCloud(11, 3)//
-                    //    "ArrowLeft" ->  level.windowX -= 1.3 //drawCloud(11, 3)//
-                    //      "ArrowRight" ->  level.addHero(i+1) //level.windowX += dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
-                    //  "ArrowLeft" -> level.windowX -= dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
+                    "ArrowLeft" ->  hero.x -= 0.3//level.windowX -= 1.3 //drawCloud(11, 3)//
+                    "ArrowRight" ->  hero.x += 0.3 //level.windowX += dt * 10 //level.windowX += 1.3 //drawCloud(7, 2) //
+
                     "ArrowUp" -> musicTheme.play()    // start
                     "ArrowDown" -> musicTheme.pause()  // stop
-                    //    "Space" ->   hero.moveRight() // window.requestAnimationFrame(::update)
+//                    "Space" ->  window.alert(level.entities.size.toString())
+                    "Space" ->  window.alert(hero.y.toString())
                 }
-                render()
+                //render()
             })
 
 
@@ -128,115 +132,73 @@ fun drawSprite(sprite: Sprite, x: Double, y: Double) {
                 HERO_BACKWARD_IMAGE
             )
             {
-                window.requestAnimationFrame(::update)
+//                window.requestAnimationFrame(::update)
 
-              //  level.entities += Entity(hero.x, 12.0, heroSprite)
-              //  level.entities += Entity(5, 12, level.brickSprite)
-              //  level.entities += Entity(6, 9, pipeSprite)
-              //  level.entities += Entity(5, 8, floorSprite)
-              //  level.entities += Entity(7, 11, bushSprites[0])
-
-/*
-//            sourceImage.src = Sprite.src
-//            sourceImage.src = TILES_IMAGE
-            sourceImage.src = HERO_FORWARD_IMAGE
-
-            sourceImage.onload = {  */
-               //  Images.load().onload = {
                 level.floor.forEach { (i, size) ->
                     level.addFloor(i, size)
                 }
 
-
                 level.bushes.forEach { (i, size) ->
-//                    addBush(i, size)
                     level.addBush(i, size)
-                 }
+                }
 
-
-                // 7=x , 8=y, 1=length
                 level.clouds.forEach { (indices, size) ->
                     val (i, j) = indices
                     level.addCloud(i, 11-j, size)
-//                    addCloud(i, 11-j, size)
                 }
-
 
                 level.pipes.forEach { (i, j) ->
                     level.addPipe(i, 13-j)
                 }
 
-              level.hills.forEach { (i, size) ->
+                level.hills.forEach { (i, size) ->
                     level.addHill(i, size)
-//                    addHill(i, size)
                 }
 
                 level.bricks.forEach { (indices, size)->
                     val (i, j) = indices
                     level.addBricks(i, j, size)
-//                    addBricks(i, j, size)
                 }
 
                 level.pandoras.forEach { (i, size)->
                     level.addPandoras(i, size)
-//                    addPandoras(i, size)
                 }
 
                 level.forwardSteps.forEach { (indices, size) ->
                     val (i, j) = indices
                     level.addForwardSteps(i, j, size)
-//                    addForwardSteps(i, j, size)
                 }
 
                 level.backwardSteps.forEach { (indices, size) ->
                     val (i, j) = indices
                     level.addBackwardSteps(i, j, size)
-//                    addBackwardSteps(i, j, size)
                 }
 
-                level.addHero(hero.x)
+                //level.addHeroR()
+//                level.entities += Entity(5, 5, floorSprite)
+//                level.entities += Entity(x = 7.0, y = 8.0, Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2))
+                level.entities += hero
+                window.requestAnimationFrame(::update)
+                render0()
 
-                //          window.requestAnimationFrame(::update)
-                render()
             }
 
-
-
-            //}//
-
-//            sourceImage.src = HERO_FORWARD_IMAGE
-//            sourceImage.onload = {
-//                level.addHero()
-//                //window.requestAnimationFrame(::update)
-//                //render()
-//            }
-
-
             Unit
+
         }
   }
 
 
-    fun render() {
+    fun render0() {
         context.clearRect(0.0, 0.0, CANVAS_WIDTH, CANVAS_HEIGHT)
         context.fillStyle = BACKGROUND_COLOR
         context.fillRect(0.0, 0.0, CANVAS_WIDTH, CANVAS_HEIGHT)
-
-
-
         level.render()
     }
 
-//
-
-//fun update0(timestamp: Double) {
-//    dt = (if (gameTime.isNaN()) 0.0
-//    else timestamp - gameTime) / 1000
-//    gameTime = timestamp
 
 fun update(timestamp: Double){
     level.update(timestamp)
-    render()
+    render0()
     window.requestAnimationFrame(::update)
 }
-//
