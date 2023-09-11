@@ -1,7 +1,7 @@
 typealias IntTriple = Pair<Pair<Int, Int>, Int>
 typealias IntPair = Pair<Int, Int>
-//private var windowX = 0.0
 var gameTime: Double = Double.NaN
+
 
 class Level(
     val floor: List<IntPair> = emptyList(),
@@ -14,76 +14,45 @@ class Level(
     val forwardSteps: List<IntTriple> = emptyList(),
     val backwardSteps: List<IntTriple> = emptyList(),
 
-    val cloudSprites: List<Sprite> = emptyList(),
-    val bushSpritesB: List<Sprite> = emptyList(),
+//    val cloudSprites: List<Sprite> = emptyList(),
+//    val bushSpritesB: List<Sprite> = emptyList(),
 //    val hillSprites: List<Sprite> = emptyList(),
 //    val pipeSprites: List<Sprite> = emptyList(),
-    val floorSpriteB: Sprite,
-    val brickSpriteB: Sprite,
-    val wallSpriteB: Sprite,
-    val heroSpriteB: Sprite
+//    val floorSpriteB: Sprite,
+//    val brickSpriteB: Sprite,
+//    val wallSpriteB: Sprite,
+//    val heroSpriteB: Sprite
 )
 
 {
-
-//    init {
-//        level1.bushes.forEach { (i, size) ->
-//            level.addBush(i, size)
-//        }
-//    }
-
-    var windowX = 2.0
+    var windowX = 0.0
     var entities = setOf<Entity>()
-
-
-
-    // val max = if (a > b) a else b // в одну строку
-//    var dir = true
     fun update(timestamp: Double) {
-        dt = (if (gameTime.isNaN()) 0.0
-        else timestamp - gameTime) / 1000
+//        dt = (if (gameTime.isNaN()) 0.0
+//        else timestamp - gameTime) / 1000
+        if (gameTime.isNaN())
+        {dt = 0.0}
+        else
+        {dt = (timestamp - gameTime) / 1000 }
         gameTime = timestamp
 
-  /*      if (level.windowX >= 190) {
-            dir = false}
-        else if (level.windowX <= 0){
-            dir = true
-            dt = 0.0
-        }
-*/
-        // if (dir && KeyboardInput.isRunPressed()){
-       // if (KeyboardInput.isRunPressed()){
-//             if (dir){
         KeyboardInput.initKeyboardListeners()
-             if (KeyboardInput.isRightPressed()){
-           // level.windowX += dt * 10}
-            //hero.moveRight()
-              hero.x += 0.02
+             if (KeyboardInput.isRightPressed())
+             {
                  level.windowX += dt * 10
-              //hero.moveRight()
-//                 context.clearRect(hero.x, hero.y, 5.0,2.0)
-                 // context.clearRect(0.0, 0.0, 762.0,720.0)
-                // context.fillRect(0.0, 0.0, 762.0, 720.0)
-                 //level.heroSprite.x(hero.x)
-                 //addHero(hero.x)
-         //        entities += Entity(hero.x, 11.0, level.heroSprite)
-
+                 hero.x +=  0.3
              }
-          else  if (KeyboardInput.isLeftPressed())
-          { level.windowX -= dt * 10}
-      //  else if (KeyboardInput.isRunBackPressed())
-  //      { level.windowX -= dt * 10}
-//        else if (KeyboardInput.isJumpPressed())
-//        { musicTheme.play()  }
-
+          else if (KeyboardInput.isLeftPressed())
+             {
+                 level.windowX -= dt * 10
+                 hero.x -=  0.3
+             }
     }
 
 
 
     fun render() {
-
     for (entity in entities) {
-       // drawSprite(entity.sprite, entity.x, entity.y)
         if (entity.x + entity.sprite.w > windowX && entity.x < windowX + 16) {
             drawSprite(entity.sprite, entity.x - windowX, entity.y)
         }
@@ -98,11 +67,22 @@ fun addFloor(start: Int, end: Int) {
     }
 }
 
-    fun addHero(i: Double)
-  //  { entities += Entity(i, 12.0, heroSprite)}
-    { level.entities += Entity(i, 12.0, heroSprite)}
+    fun addHeroR()
+    {
+       //   level.entities += hero
+    }
 
-    //                addPipe(i, 13-j) // 2,3,4  = 11,  10,9
+//    fun deleteHero(i: Double, j: Double)
+//    { //level.entities.rem  { it == target }
+//    }
+    fun addHeroL(i: Double, j: Double)
+    {
+      //  level.entities = level.entities.minusElement(Entity(hero.x, j, heroSpriteL))
+      //  level.entities = level.entities.minusElement(Entity(hero.x, j, heroSpriteR))
+         // hero.x -= 0.5
+        level.entities = level.entities.plusElement(Entity(i, j, heroSpriteL))
+    }
+
     fun addPipe(i: Int, j: Int) {
         level.entities += Entity(i, j, pipeSprite)
         if (j < 11) {
@@ -122,7 +102,7 @@ fun addFloor(start: Int, end: Int) {
                 }
                 level.entities += Entity(size+i-j+1, 12-j, hillSprites[2])
             }
-        } //
+        }
     }
 
 
@@ -137,27 +117,6 @@ fun addFloor(start: Int, end: Int) {
 
     //  https://stepik.org/lesson/825778/step/4?unit=829291
 
-
-//    fun addBricks(start: Int, end: Int, size: Int) {
-//        //    for (j in 9 downTo 7) {
-//        for (i in end..size) {
-//            entities += Entity(i, 9, brickSprite)
-//        }
-//        //    }
-//    }
-//    20 x 3 x 5, 77 x 3 x 3, 80 x 7 x 8, 91 x 7 x 4, 94 x 3 x 1,
-//    117 x 3 x 1, 100 x 3 x 2, 120 x 7 x 4, 128 x 7 x 4, 129 x 3 x 2, 168 x 3 x 4
-
-
-    /*
-    fun addBricks(i: Int, j: Int, length: Int) {
-                for (it in i until length) {
-                    if(!level1.pandoras.contains(it x j)) {
-                        entities += Entity(it , j, brickSprite)
-                    }
-                }
-            }
-*/
 
     fun addBush(i: Int, length: Int) {
 

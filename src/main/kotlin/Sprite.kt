@@ -48,9 +48,6 @@ data class Sprite(var src: String, val si: Int, val sj: Int, val w: Int = 1, val
 }
 
 
-
-
-
 // x начала спрайта, у начала, длина, высота
 val cloudSpriteFun = Sprite(TILES_IMAGE, si = 5, sj = 20, w = 3, h = 2)
 val floorSprite = Sprite(TILES_IMAGE, si = 0, sj = 0, w = 1, h = 1)
@@ -76,11 +73,8 @@ val pipelineSprite = listOf(
     //  Sprite(TILES_IMAGE, si = 2, sj = 20, h = 2),
 )
 
-val heroSprite = Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2)
-
-
-
-
+val heroSpriteR = Sprite(HERO_FORWARD_IMAGE, si = 5, sj = 2)
+val heroSpriteL = Sprite(HERO_BACKWARD_IMAGE, si = 5, sj = 2)
 
 val hillSprites = listOf(
     Sprite(TILES_IMAGE, si = 8, sj = 10),
